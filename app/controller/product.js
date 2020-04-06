@@ -83,13 +83,9 @@ exports.get_single_product = (req, res, next) => {
 
 exports.update_product = (req, res, next) => {
     const id = req.params.pId;
-    console.log(req.body);
-
-    const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
-    }
-    Product.update({ _id: id }, { $set: updateOps })
+    let data = req.body;
+    delete data.productImage;
+    Product.update({ _id: id }, { $set: data })
         .exec()
         .then((result) => {
             res.status(200).json({
